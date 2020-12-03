@@ -1,5 +1,8 @@
-[![Build Status](https://travis-ci.org/kodnaplakal/caddy-geoip.svg?branch=master)](https://travis-ci.org/kodnaplakal/caddy-geoip)
+![Test status](https://github.com/vinissimus/caddy-geoip/workflows/Test/badge.svg)
+
 ## Overview
+
+**Caddy v2 compatible!**
 
 `geoip` is a Caddy plugin that allow to determine
 user Geolocation by IP address using a
@@ -47,31 +50,26 @@ header Country-Code {geoip_country_code}
 localhost
 geoip /path/to/db/GeoLite2-City.mmdb
 proxy / localhost:3000 {
-  header_upstream Country-Name {geoip_country_name}
-  header_upstream Country-Code {geoip_country_code}
-  header_upstream Country-Eu {geoip_country_eu}
-  header_upstream City-Name {geoip_city_name}
-  header_upstream Latitude {geoip_latitude}
-  header_upstream Longitude {geoip_longitude}
-  header_upstream Time-Zone {geoip_time_zone}
-  header_upstream Geohash {geoip_geohash}
+  header_up Country-Name {geoip_country_name}
+  header_up Country-Code {geoip_country_code}
+  header_up Country-Eu {geoip_country_eu}
+  header_up City-Name {geoip_city_name}
+  header_up Latitude {geoip_latitude}
+  header_up Longitude {geoip_longitude}
+  header_up Time-Zone {geoip_time_zone}
+  header_up Geohash {geoip_geohash}
 }
-```
-
-(3) Include the geolocation info in the access log:
-
-```
-log / {$HOME}/log/access.log "{when_iso} {status} {method} {latency_ms} ms {size} bytes {geoip_country_code} {remote} {host} {proto} \"{uri}\" \"{>User-Agent}\""
 ```
 
 ## Contributing
 
-1. [Fork it](https://github.com/kodnaplakal/caddy-geoip/fork)
+1. [Fork it](https://github.com/vinissimus/caddy-geoip/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new [Pull Request](https://github.com/kodnaplakal/caddy-geoip/pulls)
+5. Create a new [Pull Request](https://github.com/vinissimus/caddy-geoip/pulls)
 
 ## Contributors
 
 - [aablinoov](https://github.com/aablinov) Andrey Blinov - creator, maintainer
+- [masipcat](https://github.com/masipcat) Jordi Masip - contributor
