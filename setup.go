@@ -47,6 +47,10 @@ type geoIPRecord struct {
 		Longitude float64 `maxminddb:"longitude"`
 		TimeZone  string  `maxminddb:"time_zone"`
 	} `maxminddb:"location"`
+
+	Client struct {
+		IP string
+	}
 }
 
 // CaddyModule returns the Caddy module information.
@@ -108,6 +112,7 @@ func (g GeoIP) lookupLocation(w http.ResponseWriter, r *http.Request) {
 	repl.Set("geoip_longitude", strconv.FormatFloat(record.Location.Longitude, 'f', 6, 64))
 	repl.Set("geoip_geohash", geohash.Encode(record.Location.Latitude, record.Location.Longitude))
 	repl.Set("geoip_time_zone", record.Location.TimeZone)
+	repl.Set("geoip_client_ip", record.Client.IP)
 }
 
 func (g GeoIP) fetchGeoipData(r *http.Request) geoIPRecord {
@@ -118,6 +123,8 @@ func (g GeoIP) fetchGeoipData(r *http.Request) geoIPRecord {
 	if err != nil {
 		log.Println(err)
 	}
+
+	record.Client.IP = clientIP.String()
 
 	if record.Country.ISOCode == "" {
 		record.Country.Names = make(map[string]string)
@@ -140,7 +147,7 @@ func getClientIP(r *http.Request, strict bool) (net.IP, error) {
 	var ip string
 
 	// Use the client ip from the 'X-Forwarded-For' header, if available.
-	if fwdFor := r.Header.Get("X-Forwarded-For"); fwdFor != "" && !strict {
+	if fwdFor := r.Header.Get("X-Forwarded-For"); fwdFor != "" {
 		ips := strings.Split(fwdFor, ", ")
 		ip = ips[0]
 	} else {
